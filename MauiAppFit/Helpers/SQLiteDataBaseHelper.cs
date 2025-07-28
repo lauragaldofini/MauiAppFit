@@ -9,7 +9,7 @@ using SQLite;
 
 namespace MauiAppFit.Helpers
 {
-    public  class SQLiteDataBaseHelper
+    public class SQLiteDataBaseHelper
     {
         readonly SQLiteAsyncConnection _db;
 
@@ -46,6 +46,19 @@ namespace MauiAppFit.Helpers
                 model.Observacoes,
                 model.Id
                 );
+        }
+
+        public Task<int> Delete(int id)
+        {
+            return _db.Table<Atividade>().DeleteAsync(i => i.Id == id);
+        }
+
+        public Task<List<Atividade>> Search(string q)
+        {
+            string sql = "SELECT * FROM Atividade " +
+                "WHERE Descricao LIKE '%'" + q + "'%'";
+
+            return _db.QueryAsync<Atividade>(sql);
         }
     }
 }
